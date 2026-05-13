@@ -1,0 +1,131 @@
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def curriculo():
+    return '''<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currículo Profissional</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        header {
+            text-align: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+        h1 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+            font-size: 28px;
+        }
+        .contato {
+            font-size: 14px;
+            color: #666;
+        }
+        .contato span {
+            margin: 0 10px;
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            font-size: 20px;
+        }
+        .item {
+            margin-bottom: 15px;
+        }
+        .item-titulo {
+            font-weight: bold;
+            color: #333;
+        }
+        .item-subtitulo {
+            font-style: italic;
+            color: #555;
+            font-size: 14px;
+        }
+        ul {
+            margin: 5px 0 0 20px;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>Seu Nome Completo</h1>
+        <div class="contato">
+            <span>📞 (31) 99999-9999</span> | 
+            <span>✉️ seu.email@email.com</span>
+        </div>
+    </header>
+
+    <section>
+        <h2>Educação</h2>
+        <div class="item">
+            <div class="item-titulo">Nome da Escola ou Faculdade</div>
+            <div class="item-subtitulo">Ensino Médio / Graduação em Nome do Curso | Concluído em 202X</div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Experiência de Trabalho</h2>
+        <div class="item">
+            <div class="item-titulo">Nome da Empresa</div>
+            <div class="item-subtitulo">Cargo Ocupado | Mês/Ano de Início – Mês/Ano de Término (ou Atual)</div>
+            <ul>
+                <li>Principais atividades e responsabilidades que você desempenhava na função.</li>
+                <li>Resultados ou projetos importantes que você realizou.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2>Cursos adicionais</h2>
+        <div class="item">
+            <div class="item-titulo">Nome do Curso Extra ou Certificação</div>
+            <div class="item-subtitulo">Instituição de Ensino | Carga Horária: XX horas (Ano de Conclusão)</div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Idiomas</h2>
+        <ul>
+            <li><strong>Inglês:</strong> Nível de proficiência (ex: Fluente, Avançado, Intermediário).</li>
+            <li><strong>Espanhol:</strong> Nível de proficiência (ex: Fluente, Avançado, Intermediário).</li>
+        </ul>
+    </section>
+
+</div>
+
+</body>
+</html>
+'''
+
+    if __name__ == '__main__':
+    app.run(debug=True)
