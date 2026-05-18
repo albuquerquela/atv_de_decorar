@@ -1,0 +1,197 @@
+-- index
+{% extends 'layout.html' %}
+
+
+{% block title %}
+
+
+Index
+
+
+
+{% endblock %}
+
+{% block content %}
+<h1>Aula 4 de Flask
+
+</h1>
+
+
+
+<p> Na nossa jornada já aprendemos a criar rotas, renderizar templates e usar variáveis. Agora, vamos dar um passo adiante e criar um menu de navegação para o nosso site Flask. O menu permitirá que os usuários acessem diferentes páginas do site, como "Sobre Python", "Sobre o Flask" e "Sobre ser estudante de TI". Cada página terá seu próprio conteúdo específico, mas todas compartilharão a mesma estrutura básica definida no template layout.html. O menu de navegação será implementado usando links que apontam para as rotas correspondentes no Flask, facilitando a navegação entre as páginas do site.
+    </p>
+    <p>
+    Nesta aula, vamos criar um menu de navegação para o nosso site Flask. O menu permitirá que os usuários acessem diferentes páginas do site, como "Sobre Python", "Sobre o Flask" e "Sobre ser estudante de TI". Cada página terá seu próprio conteúdo específico, mas todas compartilharão a mesma estrutura básica definida no template layout.html. O menu de navegação será implementado usando links que apontam para as rotas correspondentes no Flask, facilitando a navegação entre as páginas do site.
+
+</p>
+
+
+{% endblock %}
+
+--page1
+{% extends 'layout.html' %}
+
+
+{% block title %}
+
+Sobre a linguagem Python
+
+
+
+{% endblock %}
+
+{% block content %}
+<h1>Sobre a linguagem Python</h1>
+
+<p>Conteúdo de página sobre Python
+
+    Python é uma linguagem de programação de alto nível, interpretada e de propósito geral. Ela é conhecida por sua sintaxe clara e legibilidade, o que a torna uma ótima escolha para iniciantes e profissionais experientes. Python suporta múltiplos paradigmas de programação, incluindo programação orientada a objetos, funcional e procedural. É amplamente utilizada em diversas áreas, como desenvolvimento web, ciência de dados, inteligência artificial, automação e muito mais. A comunidade ativa e a vasta quantidade de bibliotecas disponíveis tornam Python uma das linguagens mais populares do mundo.
+</p>
+{% endblock %}
+-- layout
+<!DOCTYPE html>
+<html>
+
+<!-- Template base para as páginas do Flask Menu. 
+     Contém a estrutura básica do HTML, incluindo o menu de navegação e um bloco para o conteúdo específico de cada página. 
+     As páginas individuais estendem este template e preenchem os blocos de título e conteúdo conforme necessário. 
+     
+     O bloco 'title' é usado para definir o título da página, que é exibido na aba do navegador. 
+     O bloco 'content' é onde o conteúdo específico de cada página será inserido. -->
+
+<head>
+
+    <!-- Aqui entra o primeiro Jinja2, que é usado junto com o Flask.
+         A função url_for é utilizada para gerar URLs dinâmicas.
+         Nesse caso, ela gera o caminho para arquivos estáticos, como o CSS. -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <title>{% block title %}{% endblock %} - Flask Menu</title>
+
+</head>
+
+<body>
+    <div class="menu">
+        <nav>
+            <ul>
+                <!-- url_for também é usado para navegar entre rotas do Flask -->
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('page1') }}">Sobre Python</a></li>
+                <li><a href="{{ url_for('page2') }}">Sobre o Flask</a></li>
+                <li><a href="{{ url_for('page3') }}">Sobre ser estudante de TI</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+
+</body>
+
+</html>
+
+page2
+{% extends 'layout.html' %}
+
+
+{% block title %}
+
+Sobre o Flask
+
+
+
+{% endblock %}
+
+{% block content %}
+<h1>Sobre o Flask</h1>
+
+<p>Conteúdo de página sobre o Flask
+
+    O Flask é um microframework para Python baseado em Werkzeug e Jinja2. Ele é leve e flexível, permitindo que os desenvolvedores criem aplicações web de forma simples e rápida. O Flask oferece recursos essenciais para o desenvolvimento web, como roteamento, manipulação de requisições e respostas, e suporte a templates.
+</p>
+{% endblock %}
+page3
+{% extends 'layout.html' %}
+
+
+{% block title %}
+
+Sobre ser estudante de TI
+
+
+
+{% endblock %}
+
+{% block content %}
+<h1>Sobre ser estudante de TI</h1>
+
+<p>Conteúdo de página sobre ser estudante de TI
+
+    Ser estudante de TI é nunca parar de aprender. Todo dia cada coisa nova surge, seja uma nova linguagem de programação, um novo framework ou uma nova tecnologia. A área de TI é dinâmica e em constante evolução, o que torna a jornada de um estudante de TI emocionante e desafiadora. Envolve aprender sobre programação, redes, segurança da informação e muito mais. É uma área em constante evolução, com muitas oportunidades de carreira e a possibilidade de contribuir para o desenvolvimento de tecnologias que transformam o mundo.
+    
+   
+</p>
+{% endblock %}
+style
+body{
+
+    font-family: Arial, sans-serif;
+    display: flex;
+    background-color: white;
+    
+}
+
+.menu {
+    width: 200px;
+    background-color: #ef87f3;
+    padding: 20px;
+    height: 100vh;
+}
+
+.conteudo {
+    flex: 1;
+    padding: 20px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+
+.menu ul {
+    list-style-type: nome;
+    padding: 0;
+}
+
+
+.menu ul li a {
+    text-decoration: nome;
+    color: white;
+    display: block;
+    padding: 10px 0;
+
+}
+
+app
+from flask import Flask, render_template
+ 
+
+app = Flask(__name__)
+
+@app.route('/')
+def index(): 
+    return render_template("index.html")
+
+@app.route('/page1')
+def page1(): 
+    return render_template("page1.html")
+
+@app.route('/page2')
+def page2():
+    return render_template("page2.html")
+
+
+@app.route('/page3')
+def page3():
+    return render_template("page3.html")
+
+if __name__ == '__main__':
+    app.run(debug=True)
