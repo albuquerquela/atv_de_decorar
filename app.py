@@ -1,111 +1,45 @@
-"""
-AulaSQLalchemy — Flask + SQLAlchemy (simples, sem MVC)
-CRUD de alunos em um único arquivo.
-"""
-
 import os
 
-from flask import Flask, redirect, render_template, request, url_for
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask
 
-app = Flask(__name__)
+from controllers import api_bp, viagens_bp
+from models import Viajante, db
 
-pasta_aula = os.path.abspath(os.path.dirname(__file__))
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
-    pasta_aula, "alunos.db"
-)
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-db = SQLAlchemy(app)
+DADOS_INICIAIS = [
+    {"nome": "Peter Parker Watson"},
+    {"nome": "Maria Souza"},
+]
 
 
-# --- MODEL (tabela no banco) ---
-class Aluno(db.Model):
-    __tablename__ = "alunos"
-
-    id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(120), nullable=False)
-    telefone = db.Column(db.Decimal(20), nullable=False)
-    def __repr__(self):
-        return f"<Aluno {self.id} {self.nome}>"
-
-
-with app.app_context():
-    db.create_all()
-
-
-# --- READ — listar ---
-@app.route("/")
-def index():
-    alunos = Aluno.query.order_by_desc(Aluno.nome).all()
-    return render_template("lista.html", alunos=alunos)
-
-
-# --- CREATE — cadastrar ---
-@app.route("/cadastrar", methods=["GET", "POST"])
-def cadastrar():
-    if request.method == "POST":
-        nome = request.form.get("nome", "").strip()
-        email = request.form.get("email", "").strip()
-        telefone = request.form.gt("telefone","").strip()
-        if not nome or not email:
-            return render_template(
-                "formulario.html",
-                titulo="Cadastrar aluno",
-                erro="Preencha nome e e-mail.",
-                nome=nome,
-                email=email,
-            )
-        aluno = Aluno(nome=nome, email=email, telefone=telefone)
-        db.session.add(aluno)
-        db.session.commit()
-        return redirect(url_for("index"))
-    return render_template("formulario.html", titulo="Cadastrar aluno")
-
-
-# --- UPDATE — editar ---
-@app.route("/editar/<int:aluno_id>", methods=["GET", "POST"])
-def editar(aluno_id):
-    aluno = db.session.get(Aluno, aluno_id)
-    if not aluno:
-        return redirect(url_for("index"))
-
-    if request.method == "POST":
-        nome = request.form.get("nome", "").strip()
-        email = request.form.get("email", "").strip()
-        if not nome or not email:
-            return render_template(
-                "formulario.html",
-                titulo="Editar aluno",
-                erro="Preencha nome e e-mail.",
-                nome=nome,
-                email=email,
-                aluno_id=aluno.id,
-            )
-        aluno.nome = nome
-        aluno.email = email
-        db.session.commit()
-        return redirect(url_for("index"))
-
-    return render_template(
-        "formulario.html",
-        titulo="Editar aluno",
-        nome=aluno.nome,
-        email=aluno.email,
-        aluno_id=aluno.id,
+def criar_app():
+    app = Flask(
+        __name__,
+        template_folder="views/templates",
+        static_folder="views/static",
     )
 
+    pasta = os.path.abspath(os.path.dirname(__file__))
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
+        pasta, "viagens.db"
+    )
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["SECRET_KEY"] = "aula18-thunder-viagens-dev"
 
-# --- DELETE — excluir ---
-@app.route("/excluir/<int:aluno_id>", methods=["POST"])
-def excluir(aluno_id):
-    aluno = db.session.get(Aluno, aluno_id)
-    if aluno:
-        db.session.delete(aluno)
-        db.session.commit()
-    return redirect(url_for("index"))
+    db.init_app(app)
+    app.register_blueprint(viagens_bp)
+    app.register_blueprint(api_bp)
 
+    with app.app_context():
+        db.create_all()
+        if Viajante.query.count() == 0:
+            for dados in DADOS_INICIAIS:
+                db.session.add(Viajante(**dados))
+            db.session.commit()
+
+    return app
+
+
+app = criar_app()
 
 if __name__ == "__main__":
     app.run(debug=True)
