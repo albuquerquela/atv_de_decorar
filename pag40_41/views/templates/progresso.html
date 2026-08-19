@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard de Progresso{% endblock %}
+
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-pie-chart-fill me-2"></i>Progresso das Tarefas</h2>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 p-3">
+            <h5 class="card-title text-center mb-3">Distribuição (Gráfico de Rosca)</h5>
+            <canvas id="chartDoughnut"></canvas>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 p-3">
+            <h5 class="card-title text-center mb-3">Quantidade por Status (Barras)</h5>
+            <canvas id="chartBar"></canvas>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function renderizarGraficos() {
+    const res = await fetch('/api/estatisticas');
+    const dados = await res.json();
+
+    const labels = ['Pendente', 'Em Andamento', 'Concluída'];
+    const valores = [dados.pendente, dados.em_andamento, dados.concluida];
+    const cores = ['#ffc107', '#0d6efd', '#198754'];
+
+    new Chart(document.getElementById('chartDoughnut'), {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: valores,
+                backgroundColor: cores
+            }]
+        }
+    });
+
+    new Chart(document.getElementById('chartBar'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Quantidade',
+                data: valores,
+                backgroundColor: cores
+            }]
+        },
+        options: {
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        }
+    });
+}
+
+renderizarGraficos();
+</script>
+{% endblock %}
