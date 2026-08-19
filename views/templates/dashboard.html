@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Painel de Tarefas{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-list-task me-2"></i>Tarefas</h2>
+    
+    <div class="d-flex gap-2">
+        <select id="filtroStatus" class="form-select">
+            <option value="todas">Todas as Tarefas</option>
+            <option value="pendente">Pendentes</option>
+            <option value="em_andamento">Em Andamento</option>
+            <option value="concluida">Concluídas</option>
+        </select>
+
+        <a href="{{ url_for('nova_tarefa') }}" class="btn btn-primary text-nowrap">
+            <i class="bi bi-plus-lg me-1"></i>Nova Tarefa
+        </a>
+    </div>
+</div>
+
+<div id="containerTarefas" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function carregarTarefas(status = 'todas') {
+    const response = await fetch(`/api/tarefas?status=${status}`);
+    const tarefas = await response.json();
+    const container = document.getElementById('containerTarefas');
+    container.innerHTML = '';
+
+    if (tarefas.length === 0) {
+        container.innerHTML = `<div class="col-12 text-center text-muted py-4"><p>Nenhuma tarefa encontrada.</p></div>`;
+        return;
+    }
+
+    tarefas.forEach(t => {
+        let badgeClass = 'bg-warning text-dark';
+        let statusNome = 'Pendente';
+
+        if (t.status === 'em_andamento') {
+            badgeClass = 'bg-primary';
+            statusNome = 'Em Andamento';
+        } else if (t.status === 'concluida') {
+            badgeClass = 'bg-success';
+            statusNome = 'Concluída';
+        }
+
+        const card = `
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title">${t.titulo}</h5>
+                            <span class="badge ${badgeClass}">${statusNome}</span>
+                        </div>
+                        <p class="card-text text-secondary flex-grow-1">${t.descricao || ''}</p>
+                        <div class="d-flex justify-content-end gap-2 pt-3 border-top">
+                            <a href="/editar/${t.id}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-pencil"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        container.innerHTML += card;
+    });
+}
+
+document.getElementById('filtroStatus').addEventListener('change', (e) => {
+    carregarTarefas(e.target.value);
+});
+
+carregarTarefas();
+</script>
+{% endblock %}

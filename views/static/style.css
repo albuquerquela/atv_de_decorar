@@ -1,0 +1,154 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+
+nav {
+    background-color: #333;
+    padding: 1rem;
+    color: white;
+}
+
+nav a {
+    color: white;
+    margin-left: 15px;
+    text-decoration: none;
+}
+
+nav span {
+    font-weight: bold;
+    margin-right: 15px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 30px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+form div {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+.alert-danger { background-color: #f8d7da; color: #721c24; }
+.alert-success { background-color: #d4edda; color: #155724; }
+.alert-info { background-color: #d1ecf1; color: #0c5460; }
+.alert-warning { background-color: #fff3cd; color: #856404; }
+
+.card-motivacional {
+    background-color: #eef6ff;
+    border-left: 4px solid #007bff;
+    padding: 15px;
+    margin-bottom: 25px;
+    border-radius: 4px;
+}
+
+.frase-texto {
+    font-style: italic;
+    margin: 0 0 5px 0;
+    color: #2c3e50;
+    font-size: 1.1rem;
+}
+
+.frase-autor {
+    margin: 0;
+    text-align: right;
+    font-weight: bold;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.header-dashboard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.lista-tarefas {
+    list-style: none;
+    padding: 0;
+}
+
+.item-tarefa {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.info-tarefa p {
+    margin: 5px 0 0 0;
+    color: #666;
+}
+
+.badge {
+    display: inline-block;
+    padding: 3px 8px;
+    font-size: 0.8rem;
+    border-radius: 12px;
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+.badge-pendente { background: #ffe3a3; color: #8a5300; }
+.badge-em_andamento { background: #b8e2f2; color: #005680; }
+.badge-concluida { background: #c3e6cb; color: #155724; }
+
+.btn {
+    padding: 8px 14px;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    font-size: 0.9rem;
+}
+
+.btn-primary { background-color: #007bff; color: white; }
+.btn-secundary { background-color: #6c757d; color: white; }
+.btn-danger { background-color: #dc3545; color: white; }
+
+textarea, select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
